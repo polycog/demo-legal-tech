@@ -102,10 +102,10 @@ conda activate sij-validator
 
 ### 2. Install `cognition`
 
-`cognition` is installed from its GitHub repository, as the `polycog-cognition` package. You need SSH access to `github.com/polycog/cognition`.
+`cognition` is published on PyPI as the `polycog-cognition` package:
 
 ```bash
-pip install "polycog-cognition @ git+ssh://git@github.com/polycog/cognition.git"
+pip install polycog-cognition
 ```
 
 This also installs `pydantic-ai-slim` (2.9.x), which `cognition` builds on.
