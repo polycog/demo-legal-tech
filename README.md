@@ -1,14 +1,17 @@
 # SIJ Document Validator
 
-A document validator built with the **`cognition`** library. It reads the facts and court notes of an immigration case from `case-facts.json`, and decides whether the applicant qualifies for **Special Immigrant Juvenile (SIJ) status** under [INA § 101(a)(27)(J)](https://libguides.law.rutgers.edu/c.php?g=858689&p=6152306).
+A **neurosymbolic** document validator built with the **`cognition`** library. It reads the facts and court notes of an immigration case from `case-facts.json`, and decides whether the applicant qualifies for **Special Immigrant Juvenile (SIJ) status** under [INA § 101(a)(27)(J)](https://libguides.law.rutgers.edu/c.php?g=858689&p=6152306).
 
-The validator reasons the way an attorney or judge would, by deduction:
+The validator splits the work between two kinds of reasoning:
+
+- **Neural: reading the text.** An LLM reads the court's notes, written in plain English, and turns each finding into a fact: was a custody order issued? Is reunification with a parent not viable? Is returning home not in the applicant's best interest? Each answer cites the note it came from.
+- **Symbolic: applying the law.** The legal rules are written as code. Each rule is an `Operator` whose conditions are spelled out in `can_perform`, and the validator applies them to the facts by deduction to reach its conclusion. No LLM is involved in this step, so the conclusion follows from the facts exactly as the law says, and every step can be checked.
+
+The symbolic part reasons the way an attorney or judge would:
 
 1. **Major premise (the law):** Rule A lists the conditions for SIJ eligibility.
-2. **Minor premises (the facts):** the case facts, some stated directly and some inferred from the court's notes.
+2. **Minor premises (the facts):** the case facts, some stated directly and some inferred from the court's notes by the LLM.
 3. **Conclusion:** the applicant is eligible if and only if every condition of Rule A holds.
-
-An LLM is used only to read the notes. The deduction itself is symbolic: each legal rule is an `Operator` whose conditions are spelled out in `can_perform`.
 
 **Demo:** [watch the validator run on Mateo's case](https://drive.google.com/file/d/14jnK5VI7ICHNg4FS9kUgCo29eMzOwxG5/view?usp=sharing)
 
