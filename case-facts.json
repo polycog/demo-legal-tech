@@ -1,0 +1,16 @@
+{
+  "case": "Mateo — Special Immigrant Juvenile Status",
+  "petition": "Petition for Special Immigrant Juvenile (SIJ) classification under INA § 101(a)(27)(J).",
+  "facts": {
+    "applicant": "Mateo",
+    "age": 17,
+    "married": false,
+    "state_court": "California Superior Court",
+    "state_court_is_juvenile_court": true
+  },
+  "notes": [
+    "The California Superior Court legally appointed Mateo's aunt as his guardian.",
+    "The court formally found that reunification with Mateo's father is impossible due to severe abandonment.",
+    "The court found that returning to his home country would expose Mateo to unsafe living conditions and is not in his best interest."
+  ]
+}
