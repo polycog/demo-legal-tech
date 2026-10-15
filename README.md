@@ -10,6 +10,8 @@ The validator reasons the way an attorney or judge would, by deduction:
 
 An LLM is used only to read the notes. The deduction itself is symbolic: each legal rule is an `Operator` whose conditions are spelled out in `can_perform`.
 
+**Demo:** [watch the validator run on Mateo's case (`validator.mov`)](validator.mov)
+
 ---
 
 ## The Law: Rule A
@@ -188,3 +190,4 @@ To validate another case, edit `case-facts.json`, or point `CASE_FACTS` in `vali
 |---|---|
 | `validator.py` | the state, operators, and decision process |
 | `case-facts.json` | the facts and court notes for the case being validated |
+| `validator.mov` | a screen recording of the validator running |
