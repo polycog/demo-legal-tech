@@ -65,25 +65,26 @@ An inferred fact can also be given directly in `facts` as `true` or `false`. It 
 
 ## The Decision Process
 
-The validator is a single `DecisionProcess[CaseState]` with four operators. Each cycle, the operators whose `can_perform` holds are proposed, one is chosen, and its `perform` updates the state.
+The validator works like a careful paralegal with a checklist. It has four rules, and each rule says **when** it applies and **what** it does. The validator keeps checking which rules apply, carries one out, and repeats until none apply.
 
-The decision starts as **INELIGIBLE**. Only `ApplySIJRule` can change it, to **ELIGIBLE**. The process stops when no operator applies any more. That happens either when the applicant has been found **ELIGIBLE**, or when every fact is known and a condition of Rule A fails, so the rule can never fire and the decision stays **INELIGIBLE**. The unmet conditions (`ApplySIJRule.unmet`) are then listed to explain it.
+**Step 1: Fill in the missing facts (neural).** Three facts aren't stated directly and have to be found in the court's notes. Each has its own rule, which asks the LLM to read the notes one at a time and answer a yes-or-no question:
 
-| Operator | When | Then |
-|---|---|---|
-| `InferCustodyOrder` | not yet eligible, AND `custody_order` is unknown | classify the notes with a binary `EnumClassifier` over `CustodyOrder` (`TRUE`/`FALSE`); set `custody_order` true if a note establishes a custody order (citing it), false otherwise |
-| `InferReunificationNotViable` | not yet eligible, AND `reunification_not_viable` is unknown | classify the notes with a binary `EnumClassifier` over `ReunificationNotViable`; set `reunification_not_viable` true if a note establishes it (citing it), false otherwise |
-| `InferBestInterestNotToReturn` | not yet eligible, AND `best_interest_not_to_return` is unknown | classify the notes with a binary `EnumClassifier` over `BestInterestNotToReturn`; set `best_interest_not_to_return` true if a note establishes it (citing it), false otherwise |
-| `ApplySIJRule` | not yet eligible, AND all five conditions of Rule A hold | set the decision to **ELIGIBLE**, citing the facts for each condition |
+| Rule | Question it answers from the notes |
+|---|---|
+| Find custody order | Did a state court appoint a guardian, place the applicant in custody, or declare them dependent? |
+| Find reunification not viable | Did the court find that the applicant can't be reunited with a parent because of abuse, neglect, abandonment, or something similar? |
+| Find best interest not to return | Did the court find that going back to their home country is not in the applicant's best interest? |
 
-`ApplySIJRule` cannot fire before the inference rules have run: an unknown fact does not satisfy its condition, and only an inference rule can make it true.
+A rule stops reading as soon as it finds a note that answers "yes", and records that note as its evidence. If no note says so, the answer is "no". Each question is asked only once.
 
-### Design notes
+**Step 2: Apply the law (symbolic).** Once every fact is known, the last rule, **Apply Rule A**, checks all five conditions of the law. No LLM is used here; it is a plain check of the facts against the conditions.
 
-- **Conditions live in `can_perform`.** Each operator states its "when" in full, so the rules read like the law and can be checked against it.
-- **One binary classifier per inference rule.** Each inference rule builds its own `EnumClassifier` over a two-valued `DocEnum` in `__init__`. `can_perform` only checks that its fact is unknown; `perform` classifies the notes, stopping at the first that establishes the fact, and sets the fact true or false. Because the fact is then known, the rule runs, and calls the LLM, once.
-- **`ApplySIJRule` never overlaps with another operator.** When more than one operator applies, `cognition` asks the registered action evaluators to rank them, and raises `No action rankings` if none are registered. The three inference rules set independent facts and can apply in the same cycle, so a `uniform_evaluator` ranks them equally and one is chosen at random. `ApplySIJRule` is kept apart from them by its conditions, so an overlap there raises an error instead of being silently resolved.
-- **Ineligible is the default.** Like the inferred facts, the decision starts in its negative state and only a rule can make it positive: `ApplySIJRule` is the "if" of Rule A, and the INELIGIBLE default covers the "only if". The conditions of Rule A are defined once, in `ApplySIJRule.conditions`: `can_perform` checks that all hold, `perform` cites them, and `ApplySIJRule.unmet` (used for the explanation) lists those that fail, so changing a condition in one place changes it everywhere.
+- If every condition holds, the applicant is **ELIGIBLE**, and the validator lists the fact behind each condition.
+- If any condition fails, the applicant stays **INELIGIBLE**, which is the starting answer, and the validator lists the conditions that were not met.
+
+Because the decision starts as INELIGIBLE and only a fully satisfied Rule A can change it, the validator never says "eligible" on missing or uncertain information.
+
+> **For developers:** each rule is an `Operator` in `validator.py`, with its "when" in `can_perform` and its "what" in `perform`. The fact-finding rules (`InferCustodyOrder`, `InferReunificationNotViable`, `InferBestInterestNotToReturn`) each use a yes/no `EnumClassifier`; they can run in any order, so a `uniform_evaluator` picks among them at random. The conditions of Rule A are defined once, in `ApplySIJRule.conditions`.
 
 ---
 
