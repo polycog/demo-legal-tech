@@ -1,0 +1,6 @@
+# runtime
+polycog-cognition>=1.0
+pydantic-ai-slim[openai]~=2.9.1
+
+# testing
+pytest>=9.1

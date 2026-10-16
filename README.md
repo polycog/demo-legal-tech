@@ -1,5 +1,8 @@
 # SIJ Document Validator
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.13+](https://img.shields.io/badge/python-3.13%2B-blue.svg)](https://www.python.org/downloads/)
+
 A **neurosymbolic** document validator built with the **`cognition`** library. It reads the facts and court notes of an immigration case from `case-facts.json`, and decides whether the applicant qualifies for **Special Immigrant Juvenile (SIJ) status** under [INA § 101(a)(27)(J)](https://libguides.law.rutgers.edu/c.php?g=858689&p=6152306).
 
 The validator splits the work between two kinds of reasoning:
@@ -13,6 +16,20 @@ This neurosymbolic validator [reasons the way an expert, attorney, or judge woul
 3. **Conclusion:** the applicant is eligible if and only if every condition of Rule A holds.
 
 **Demo:** [watch the validator run on Mateo's case](https://drive.google.com/file/d/14jnK5VI7ICHNg4FS9kUgCo29eMzOwxG5/view?usp=sharing)
+
+> **Disclaimer:** this project is a technical demonstration of neurosymbolic reasoning. It is not legal advice, has not been reviewed for use in real cases, and is no substitute for a qualified immigration attorney. The case in `case-facts.json` is fictional.
+
+### Contents
+
+- [The Law: Rule A](#the-law-rule-a)
+- [The Facts](#the-facts-case-factsjson)
+- [The Decision Process](#the-decision-process)
+- [Installation](#installation)
+- [Running](#running)
+- [Testing](#testing)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
@@ -89,7 +106,14 @@ Because the decision starts as INELIGIBLE and only a fully satisfied Rule A can 
 
 ## Installation
 
-### 1. Create a Python environment
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/polycog/demo-legal-tech.git
+cd demo-legal-tech
+```
+
+### 2. Create a Python environment
 
 `cognition` requires **Python 3.13 or later**.
 
@@ -103,23 +127,17 @@ conda create -n sij-validator python=3.13
 conda activate sij-validator
 ```
 
-### 2. Install `cognition`
-
-`cognition` is published on PyPI as the `polycog-cognition` package:
+### 3. Install the dependencies
 
 ```bash
-pip install polycog-cognition
+pip install -r requirements.txt
 ```
 
-This also installs `pydantic-ai-slim` (2.9.x), which `cognition` builds on.
+This installs:
 
-### 3. Install `pydantic-ai` with OpenAI support
-
-The note classifier runs on `openai:gpt-4o`, which needs the OpenAI extra of `pydantic-ai`:
-
-```bash
-pip install "pydantic-ai-slim[openai]~=2.9.1"
-```
+- **`polycog-cognition`**, the `cognition` library, published on PyPI under that name;
+- **`pydantic-ai-slim[openai]`** (2.9.x), which `cognition` builds on, with the OpenAI extra that the note classifier needs to run on `openai:gpt-4o`;
+- **`pytest`**, for running the test suite.
 
 Check the install:
 
@@ -187,9 +205,43 @@ To validate another case, edit `case-facts.json`, or point `CASE_FACTS` in `vali
 
 ---
 
-## Files
+## Testing
 
-| File | Contents |
+The test suite uses [pytest](https://docs.pytest.org/), installed with the other requirements, and runs fully offline: it replaces the LLM note classifier with a deterministic keyword-based fake, so it needs no API key and makes no paid calls.
+
+```bash
+python -m pytest tests
+```
+
+It covers loading cases, each condition of Rule A, the three fact-finding rules, and full runs of the validator on eligible and ineligible cases. It does not check how well the real LLM classifies notes.
+
+---
+
+## Project Structure
+
+| Path | Contents |
 |---|---|
 | `validator.py` | the state, operators, and decision process |
 | `case-facts.json` | the facts and court notes for the case being validated |
+| `tests/` | the offline pytest suite |
+| `requirements.txt` | the Python dependencies |
+| `LICENSE` | the MIT license |
+
+---
+
+## Contributing
+
+Contributions are welcome. To report a bug or suggest an improvement, [open an issue](https://github.com/polycog/demo-legal-tech/issues). To contribute code:
+
+1. Fork the repository and create a branch for your change.
+2. Make your change, and add or update tests in `tests/` to cover it.
+3. Check that `python -m pytest tests` passes.
+4. Open a pull request describing what you changed and why.
+
+Never commit API keys or real case data. Any example case should be fictional.
+
+---
+
+## License
+
+This project is released under the [MIT License](LICENSE). Copyright © 2026 Polycog, Inc.
