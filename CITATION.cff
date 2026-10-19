@@ -11,6 +11,9 @@ authors:
   - given-names: Shiwali
     family-names: Mohan
     affiliation: "Polycog, Inc."
+  - given-names: Nate
+    family-names: Derbinsky
+    affiliation: "Polycog, Inc."
   - name: "Polycog, Inc."
 repository-code: "https://github.com/polycog/demo-legal-tech"
 license: Apache-2.0
