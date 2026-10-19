@@ -69,15 +69,9 @@ Under INA § 101(a)(27)(J), an applicant is eligible for SIJ status **if and onl
 ```
 
 - **`facts`** holds the facts stated directly: `applicant`, `age`, `married`, `state_court`, `state_court_is_juvenile_court`.
-- **`notes`** holds the court's findings in plain English. The validator infers three facts from them. Each starts unknown (`null`), and is set true if some note records the finding below, false otherwise:
+- **`notes`** holds the court's findings in plain English. The validator infers three facts from them; see [The Decision Process](#the-decision-process).
 
-| Fact | Set true when a note records… |
-|---|---|
-| `custody_order` | the state court appointing a guardian, placing the applicant in custody, or declaring them dependent |
-| `reunification_not_viable` | a state court finding that reunification with a parent is not viable due to abuse, neglect, abandonment, or similar |
-| `best_interest_not_to_return` | a state court finding that returning to the home country is not in the applicant's best interest |
-
-An inferred fact can also be given directly in `facts` as `true` or `false`. It is then known from the start, and its rule doesn't fire.
+An inferred fact (`custody_order`, `reunification_not_viable`, `best_interest_not_to_return`) can also be given directly in `facts` as `true` or `false`. It is then known from the start, and its rule doesn't fire.
 
 ---
 
@@ -86,6 +80,14 @@ An inferred fact can also be given directly in `facts` as `true` or `false`. It 
 The validator works like a careful paralegal with a checklist. It has four rules, and each rule says **when** it applies and **what** it does. The validator keeps checking which rules apply, carries one out, and repeats until none apply.
 
 ![The validator's decision process: three neural operators infer facts from the court's notes, and a symbolic operator applies Rule A](docs/decision-process.png)
+
+The three fact-finding rules (neural) infer their facts from the notes. Each fact starts unknown (`null`), and is set true if some note records the finding below, false otherwise:
+
+| Fact | Set true when a note records… |
+|---|---|
+| `custody_order` | the state court appointing a guardian, placing the applicant in custody, or declaring them dependent |
+| `reunification_not_viable` | a state court finding that reunification with a parent is not viable due to abuse, neglect, abandonment, or similar |
+| `best_interest_not_to_return` | a state court finding that returning to the home country is not in the applicant's best interest |
 
 > **For developers:** each rule is an `Operator` in `validator.py`, with its "when" in `can_perform` and its "what" in `perform`. The fact-finding rules (`InferCustodyOrder`, `InferReunificationNotViable`, `InferBestInterestNotToReturn`) each use a yes/no `EnumClassifier`; they can run in any order, so a `uniform_evaluator` picks among them at random. The conditions of Rule A are defined once, in `ApplySIJRule.conditions`.
 
