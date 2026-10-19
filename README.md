@@ -85,24 +85,7 @@ An inferred fact can also be given directly in `facts` as `true` or `false`. It 
 
 The validator works like a careful paralegal with a checklist. It has four rules, and each rule says **when** it applies and **what** it does. The validator keeps checking which rules apply, carries one out, and repeats until none apply.
 
-![The validator's decision process: three neural operators infer facts from the court's notes, and a symbolic operator applies Rule A](docs/decision-process.svg)
-
-**Step 1: Fill in the missing facts (neural).** Three facts aren't stated directly and have to be found in the court's notes. Each has its own rule, which asks the LLM to read the notes one at a time and answer a yes-or-no question:
-
-| Rule | Question it answers from the notes |
-|---|---|
-| Find custody order | Did a state court appoint a guardian, place the applicant in custody, or declare them dependent? |
-| Find reunification not viable | Did the court find that the applicant can't be reunited with a parent because of abuse, neglect, abandonment, or something similar? |
-| Find best interest not to return | Did the court find that going back to their home country is not in the applicant's best interest? |
-
-A rule stops reading as soon as it finds a note that answers "yes", and records that note as its evidence. If no note says so, the answer is "no". Each question is asked only once.
-
-**Step 2: Apply the law (symbolic).** Once every fact is known, the last rule, **Apply Rule A**, checks all five conditions of the law. No LLM is used here; it is a plain check of the facts against the conditions.
-
-- If every condition holds, the applicant is **ELIGIBLE**, and the validator lists the fact behind each condition.
-- If any condition fails, the applicant stays **INELIGIBLE**, which is the starting answer, and the validator lists the conditions that were not met.
-
-Because the decision starts as INELIGIBLE and only a fully satisfied Rule A can change it, the validator never says "eligible" on missing or uncertain information.
+![The validator's decision process: three neural operators infer facts from the court's notes, and a symbolic operator applies Rule A](docs/decision-process.png)
 
 > **For developers:** each rule is an `Operator` in `validator.py`, with its "when" in `can_perform` and its "what" in `perform`. The fact-finding rules (`InferCustodyOrder`, `InferReunificationNotViable`, `InferBestInterestNotToReturn`) each use a yes/no `EnumClassifier`; they can run in any order, so a `uniform_evaluator` picks among them at random. The conditions of Rule A are defined once, in `ApplySIJRule.conditions`.
 
@@ -228,7 +211,7 @@ It covers loading cases, each condition of Rule A, the three fact-finding rules,
 | `validator.py` | the state, operators, and decision process |
 | `case-facts.json` | the facts and court notes for the case being validated |
 | `tests/` | the offline pytest suite |
-| `docs/` | the decision process diagram |
+| `docs/` | the decision process diagram (SVG source and PNG) |
 | `requirements.txt` | the Python dependencies |
 | `LICENSE` | the Apache 2.0 license |
 | `NOTICE` | copyright notice |
