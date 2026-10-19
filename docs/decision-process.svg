@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 830" width="960" height="830" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#1f2328">
+  <title>SIJ validator decision process, at the operator level</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#57606a"/>
+    </marker>
+    <style>
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .key  { font-weight: 600; fill: #57606a; }
+      .line { stroke: #57606a; stroke-width: 1.5; fill: none; }
+      .note { fill: #57606a; font-size: 11.5px; }
+    </style>
+  </defs>
+
+  <rect width="960" height="830" fill="#ffffff"/>
+
+  <text x="480" y="34" text-anchor="middle" font-size="18" font-weight="600">SIJ validator: decision process</text>
+
+  <!-- input -->
+  <rect x="280" y="56" width="400" height="78" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="480" y="80" text-anchor="middle" class="mono" font-size="13" font-weight="600">case-facts.json</text>
+  <text x="480" y="101" text-anchor="middle"><tspan class="key">facts</tspan>  age · married · state court</text>
+  <text x="480" y="120" text-anchor="middle"><tspan class="key">notes</tspan>  the court's findings, in plain English</text>
+
+  <!-- notes bus to inference operators -->
+  <path class="line" d="M480,134 V162"/>
+  <path class="line" d="M190,162 H770"/>
+  <path class="line" d="M190,162 V190" marker-end="url(#arrow)"/>
+  <path class="line" d="M480,162 V190" marker-end="url(#arrow)"/>
+  <path class="line" d="M770,162 V190" marker-end="url(#arrow)"/>
+  <text x="492" y="154" class="note">notes · inference operators run in any order</text>
+
+  <!-- direct facts bypass to rule -->
+  <path class="line" d="M280,95 H24 V525 H198" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <text x="32" y="515" class="note">age · married · court</text>
+
+  <!-- neural operator 1 -->
+  <g transform="translate(50,192)">
+    <rect width="280" height="165" rx="8" fill="#ffffff" stroke="#7b2fbe" stroke-width="1.5"/>
+    <path d="M8,0 H272 A8,8 0 0 1 280,8 V26 H0 V8 A8,8 0 0 1 8,0 z" fill="#f3effa"/>
+    <text x="14" y="18" font-size="11" font-weight="600" fill="#7b2fbe" letter-spacing="0.5">NEURAL · LLM READS NOTES</text>
+    <text x="14" y="52" class="mono" font-size="13" font-weight="600">InferCustodyOrder</text>
+    <text x="14" y="78"><tspan class="key">when</tspan>  not yet eligible, fact unknown</text>
+    <text x="14" y="98"><tspan class="key">then</tspan>  classify each note (majority of 3)</text>
+    <line x1="14" y1="114" x2="266" y2="114" stroke="#eaeef2"/>
+    <text x="14" y="134" class="key">sets</text>
+    <text x="50" y="134" class="mono">custody_order</text>
+    <text x="50" y="152" class="note">true if any note establishes it</text>
+  </g>
+
+  <!-- neural operator 2 -->
+  <g transform="translate(340,192)">
+    <rect width="280" height="165" rx="8" fill="#ffffff" stroke="#7b2fbe" stroke-width="1.5"/>
+    <path d="M8,0 H272 A8,8 0 0 1 280,8 V26 H0 V8 A8,8 0 0 1 8,0 z" fill="#f3effa"/>
+    <text x="14" y="18" font-size="11" font-weight="600" fill="#7b2fbe" letter-spacing="0.5">NEURAL · LLM READS NOTES</text>
+    <text x="14" y="52" class="mono" font-size="13" font-weight="600">InferReunificationNotViable</text>
+    <text x="14" y="78"><tspan class="key">when</tspan>  not yet eligible, fact unknown</text>
+    <text x="14" y="98"><tspan class="key">then</tspan>  classify each note (majority of 3)</text>
+    <line x1="14" y1="114" x2="266" y2="114" stroke="#eaeef2"/>
+    <text x="14" y="134" class="key">sets</text>
+    <text x="50" y="134" class="mono">reunification_not_viable</text>
+    <text x="50" y="152" class="note">true if any note establishes it</text>
+  </g>
+
+  <!-- neural operator 3 -->
+  <g transform="translate(630,192)">
+    <rect width="280" height="165" rx="8" fill="#ffffff" stroke="#7b2fbe" stroke-width="1.5"/>
+    <path d="M8,0 H272 A8,8 0 0 1 280,8 V26 H0 V8 A8,8 0 0 1 8,0 z" fill="#f3effa"/>
+    <text x="14" y="18" font-size="11" font-weight="600" fill="#7b2fbe" letter-spacing="0.5">NEURAL · LLM READS NOTES</text>
+    <text x="14" y="52" class="mono" font-size="13" font-weight="600">InferBestInterestNotToReturn</text>
+    <text x="14" y="78"><tspan class="key">when</tspan>  not yet eligible, fact unknown</text>
+    <text x="14" y="98"><tspan class="key">then</tspan>  classify each note (majority of 3)</text>
+    <line x1="14" y1="114" x2="266" y2="114" stroke="#eaeef2"/>
+    <text x="14" y="134" class="key">sets</text>
+    <text x="50" y="134" class="mono">best_interest_not_to_return</text>
+    <text x="50" y="152" class="note">true if any note establishes it</text>
+  </g>
+
+  <!-- inferred facts into the rule -->
+  <path class="line" d="M190,357 V388 H360 V418" marker-end="url(#arrow)"/>
+  <path class="line" d="M480,357 V418" marker-end="url(#arrow)"/>
+  <path class="line" d="M770,357 V388 H600 V418" marker-end="url(#arrow)"/>
+  <text x="492" y="392" class="note">inferred facts</text>
+
+  <!-- symbolic operator -->
+  <g transform="translate(200,420)">
+    <rect width="560" height="215" rx="8" fill="#ffffff" stroke="#c47d20" stroke-width="1.5"/>
+    <path d="M8,0 H552 A8,8 0 0 1 560,8 V26 H0 V8 A8,8 0 0 1 8,0 z" fill="#fbf3e6"/>
+    <text x="14" y="18" font-size="11" font-weight="600" fill="#a0640f" letter-spacing="0.5">SYMBOLIC · DEDUCTION, NO LLM</text>
+    <text x="14" y="52"><tspan class="mono" font-size="13" font-weight="600">ApplySIJRule</tspan><tspan fill="#57606a">   Rule A, INA § 101(a)(27)(J)</tspan></text>
+    <text x="14" y="78"><tspan class="key">when</tspan>  not yet eligible, and every condition holds:</text>
+    <text x="34" y="102" class="key">1</text><text x="52" y="102">under 21 years old</text>
+    <text x="34" y="122" class="key">2</text><text x="52" y="122">unmarried</text>
+    <text x="34" y="142" class="key">3</text><text x="52" y="142">state juvenile court, and <tspan class="mono">custody_order</tspan></text>
+    <text x="34" y="162" class="key">4</text><text x="52" y="162"><tspan class="mono">reunification_not_viable</tspan></text>
+    <text x="34" y="182" class="key">5</text><text x="52" y="182"><tspan class="mono">best_interest_not_to_return</tspan></text>
+    <text x="14" y="205"><tspan class="key">then</tspan>  <tspan class="mono">decision</tspan> ← ELIGIBLE</text>
+  </g>
+
+  <!-- outcomes -->
+  <path class="line" d="M330,635 V700" marker-end="url(#arrow)"/>
+  <text x="340" y="672" class="note">all hold: rule fires</text>
+  <path class="line" d="M630,635 V700" marker-end="url(#arrow)"/>
+  <text x="640" y="664" class="note">any unmet: no operator</text>
+  <text x="640" y="680" class="note">can perform, so the run stops</text>
+
+  <rect x="200" y="702" width="260" height="66" rx="8" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.5"/>
+  <text x="330" y="730" text-anchor="middle" font-size="15" font-weight="700" fill="#1a7f37">ELIGIBLE</text>
+  <text x="330" y="751" text-anchor="middle" class="note">each condition cited as a reason</text>
+
+  <rect x="500" y="702" width="260" height="66" rx="8" fill="#ffebe9" stroke="#cf222e" stroke-width="1.5"/>
+  <text x="630" y="730" text-anchor="middle" font-size="15" font-weight="700" fill="#cf222e">INELIGIBLE</text>
+  <text x="630" y="751" text-anchor="middle" class="note">the starting decision; unmet conditions listed</text>
+
+  <text x="480" y="808" text-anchor="middle" class="note">The decision starts INELIGIBLE. The run ends when no operator's can_perform holds.</text>
+</svg>

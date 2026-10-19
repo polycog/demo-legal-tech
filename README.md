@@ -85,6 +85,8 @@ An inferred fact can also be given directly in `facts` as `true` or `false`. It 
 
 The validator works like a careful paralegal with a checklist. It has four rules, and each rule says **when** it applies and **what** it does. The validator keeps checking which rules apply, carries one out, and repeats until none apply.
 
+![The validator's decision process: three neural operators infer facts from the court's notes, and a symbolic operator applies Rule A](docs/decision-process.svg)
+
 **Step 1: Fill in the missing facts (neural).** Three facts aren't stated directly and have to be found in the court's notes. Each has its own rule, which asks the LLM to read the notes one at a time and answer a yes-or-no question:
 
 | Rule | Question it answers from the notes |
@@ -226,6 +228,7 @@ It covers loading cases, each condition of Rule A, the three fact-finding rules,
 | `validator.py` | the state, operators, and decision process |
 | `case-facts.json` | the facts and court notes for the case being validated |
 | `tests/` | the offline pytest suite |
+| `docs/` | the decision process diagram |
 | `requirements.txt` | the Python dependencies |
 | `LICENSE` | the Apache 2.0 license |
 | `NOTICE` | copyright notice |
