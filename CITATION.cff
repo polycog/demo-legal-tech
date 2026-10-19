@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "SIJ Document Validator"
+abstract: >-
+  A neurosymbolic document validator built with the cognition library.
+  It reads the facts and court notes of an immigration case and decides
+  whether the applicant qualifies for Special Immigrant Juvenile (SIJ)
+  status under INA § 101(a)(27)(J).
+authors:
+  - given-names: Shiwali
+    family-names: Mohan
+    affiliation: "Polycog, Inc."
+  - name: "Polycog, Inc."
+repository-code: "https://github.com/polycog/demo-legal-tech"
+license: Apache-2.0
+date-released: 2026-10-19
+keywords:
+  - neurosymbolic
+  - legal reasoning
+  - immigration law
+  - special immigrant juvenile status

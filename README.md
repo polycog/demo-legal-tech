@@ -229,6 +229,7 @@ It covers loading cases, each condition of Rule A, the three fact-finding rules,
 | `requirements.txt` | the Python dependencies |
 | `LICENSE` | the Apache 2.0 license |
 | `NOTICE` | copyright notice |
+| `CITATION.cff` | how to cite this project |
 
 ---
 
