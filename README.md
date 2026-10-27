@@ -106,8 +106,6 @@ The test suite uses [pytest](https://docs.pytest.org/), installed with the other
 python -m pytest tests
 ```
 
-It covers loading cases, each condition of Rule A, the three fact-finding rules, and full runs of the validator on eligible and ineligible cases. It does not check how well the real LLM classifies notes.
-
 ---
 
 ## 5. License and Disclaimers
