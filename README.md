@@ -13,7 +13,7 @@ A **neurosymbolic** document validator built with the [`cognition`](https://gith
 
 1. [Summary](#1-summary)
 2. [Problem Statement](#2-problem-statement)
-3. [Technical Solution and Demo](#3-technical-solution-and-demo)
+3. [Technical Approach and Demo](#3-technical-approach-and-demo)
 4. [Install, Run, and Test](#4-install-run-and-test)
 5. [License and Disclaimers](#5-license-and-disclaimers)
 
@@ -27,9 +27,9 @@ See [the full problem statement and opportunity](docs/usecase.md).
 
 ---
 
-## 3. Technical Solution and Demo
+## 3. Technical Approach and Demo
 
-Like an expert paralegal, the validator applies the law to the case facts, and concludes the applicant is eligible only if every legal condition holds. An LLM reads the court's notes and turns each finding into a fact, citing the note it came from. The legal rules, written as `cognition` operators, then apply to those facts by deduction alone, so the conclusion is deterministic and every step can be audited. See [the design](docs/design.md) for details.
+Like an expert paralegal, the validator applies the law to the case facts, and concludes the applicant is eligible only if every legal condition holds. An LLM reads the court's notes and turns each finding into a fact, citing the note it came from. The legal rules, written as `cognition` operators, then apply to those facts by deduction alone, so the conclusion is deterministic and every step can be audited. See [the technical approach](docs/approach.md) for details.
 
 **Demo:** [watch the validator run on an applicant's case](https://drive.google.com/file/d/14jnK5VI7ICHNg4FS9kUgCo29eMzOwxG5/view?usp=sharing)
 

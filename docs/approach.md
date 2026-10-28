@@ -1,4 +1,4 @@
-# Technical Solution
+# Technical Approach
 
 This demo validator is built with [`cognition`](https://github.com/polycog/cognition), a library for building neurosymbolic agents. It addresses the problem described in [the use case](usecase.md): checking whether an immigration case meets every statutory requirement, reliably and with reasoning that can be audited.
 
