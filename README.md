@@ -110,6 +110,6 @@ python -m pytest tests
 
 ## 5. License and Disclaimers
 
-This project is released under the [Apache License 2.0](LICENSE). Copyright © 2026 Polycog, Inc.
+This project is released under the [Apache License 2.0](LICENSE). Copyright © 2026 Polycog, Inc. If you use it, please cite it using the metadata in [`CITATION.cff`](CITATION.cff).
 
 > **Disclaimer:** this project is a technical demonstration of neurosymbolic reasoning. It is not legal advice, has not been reviewed for use in real cases, and is no substitute for a qualified immigration attorney. The case in `case-facts.json` is fictional.
