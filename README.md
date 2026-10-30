@@ -21,7 +21,7 @@ A **neurosymbolic** document validator built with the [`cognition`](https://gith
 
 ## 2. Problem Statement
 
-Legal immigration and advocacy organizations decide eligibility for immigration relief, such as SIJ status, by having paralegals manually audit case files against statutory checklists, a slow process that limits how many cases they can handle. An AI agent could automate this review, but only if it is fully reliable: a false positive can trigger a premature filing and deportation proceedings, and a false negative can deny a vulnerable youth legal protection.
+Legal immigration and advocacy organizations decide eligibility for immigration relief, such as SIJ status, by having paralegals manually audit case files against statutory checklists, a slow process that limits how many cases they can handle. The statute itself is a precise checklist that software could apply, but the facts it needs are buried in court orders and notes written in free-form legal prose; an LLM can read that prose, but it can't be trusted to apply the law exactly or to show its reasoning. Both errors are costly: a false positive can trigger a premature filing and deportation proceedings, and a false negative can deny a vulnerable youth legal protection. Automating this review needs a **neurosymbolic** approach that combines both: language understanding to read the record, and exact deduction to apply the law.
 
 See [the full problem statement and opportunity](docs/usecase.md).
 
