@@ -21,7 +21,7 @@ A **neurosymbolic** document validator built with the [`cognition`](https://gith
 
 ## 2. Problem Statement
 
-Legal immigration and advocacy organizations decide eligibility for immigration relief, such as SIJ status, by having paralegals manually audit case files against statutory checklists, a slow process that limits how many cases they can handle. The statute itself is a precise checklist that software could apply, but the facts it needs are buried in court orders and notes written in free-form legal prose; an LLM can read that prose, but it can't be trusted to apply the law exactly or to show its reasoning. Both errors are costly: a false positive can trigger a premature filing and deportation proceedings, and a false negative can deny a vulnerable youth legal protection. Automating this review needs a **neurosymbolic** approach that combines both: language understanding to read the record, and exact deduction to apply the law.
+Legal immigration and advocacy organizations decide eligibility for immigration relief, such as SIJ status, by having paralegals manually audit case files against statutory checklists, a slow process that limits how many cases they can handle. LLMs can read the court orders and notes where the facts live, but they can't be trusted to apply the law exactly or to show their reasoning. Both errors are costly: a false positive can trigger a premature filing and deportation proceedings, and a false negative can deny a vulnerable youth legal protection. A **neurosymbolic** approach combines both: the LLM reads the record, and symbolic reasoning applies the law by deduction, so every conclusion follows from the facts and can be audited.
 
 See [the full problem statement and opportunity](docs/usecase.md).
 
@@ -29,7 +29,7 @@ See [the full problem statement and opportunity](docs/usecase.md).
 
 ## 3. Technical Approach and Demo
 
-Like an expert paralegal, the validator applies the law to the case facts, and concludes the applicant is eligible only if every legal condition holds. An LLM reads the court's notes and turns each finding into a fact, citing the note it came from. The legal rules, written as `cognition` operators, then apply to those facts by deduction alone, so the conclusion is deterministic and every step can be audited. See [the technical approach](docs/approach.md) for details.
+Like an expert paralegal, the validator applies the law to the case facts, and concludes the applicant is eligible only if every legal condition holds. An LLM reads the court's notes and turns each finding into a fact, citing the note it came from. The legal rules, written as WHEN/THEN operators in a **[symbolic decision process](https://docs.polycog.ai/ideas/kadp.html)** built with `cognition`, then apply to those facts by deduction alone, so the conclusion is deterministic and every step can be audited. See [the technical approach](docs/approach.md) for details.
 
 **Demo:** [watch the validator run on an applicant's case](https://drive.google.com/file/d/14jnK5VI7ICHNg4FS9kUgCo29eMzOwxG5/view?usp=sharing)
 

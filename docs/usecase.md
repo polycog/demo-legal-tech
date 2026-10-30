@@ -21,22 +21,24 @@ Deploying an autonomous, agentic document validator directly addresses these lim
 
 ## Why this needs neurosymbolic AI
 
-### What rules alone can't do
+### Why LLMs can't do this alone
 
-The statute is a clean conjunction of five conditions, and two of them (age and marital status) are structured fields. The other three live in court orders and expert annotations, written in legal prose that varies by court and judge: "the court finds that reunification with the father is not viable due to abandonment" may appear as a finding, a recital, or an attorney's note. A rules engine can evaluate the statute but can't read the record, so today a paralegal does that reading by hand, and that is the bottleneck.
-
-### What an LLM alone can't do
-
-An LLM can read the record, but asked "is this applicant eligible for SIJ status?", it:
+LLMs are the current state of the art for reading legal prose: they can pull findings out of court orders and expert annotations whose wording varies by court and judge ("the court finds that reunification with the father is not viable due to abandonment" may appear as a finding, a recital, or an attorney's note), work a paralegal does by hand today. But asked "is this applicant eligible for SIJ status?", an LLM:
 
 - **can answer from plausibility rather than the law,** for example concluding eligibility from a sympathetic narrative while a required finding, such as best interest, is missing;
 - **can blur neighbouring pathways,** mixing SIJ criteria with those of a U-visa;
-- **can't reliably do date arithmetic** at the age-21 boundary;
 - **can't show a chain of reasoning an attorney can audit:** its explanation is generated after the answer, not the reason for it.
 
 A confident wrong answer causes real harm in both directions: a premature filing, or a denied protection.
 
-### Splitting the work
+### What symbolic reasoning adds
+
+Adding symbolic reasoning keeps the LLM reading the record, and applies the law the way an attorney does, by deduction:
+
+- **Conclusions follow the statute, not plausibility.** The applicant is eligible only if every condition holds, and a missing finding is reported as missing.
+- **Each legal pathway is its own set of rules,** so the criteria of one can't leak into another.
+- **Structured facts are checked by rule,** so age and marital status are never estimated.
+- **Every conclusion has an audit trail:** each fact cites the note it came from, and each step of the deduction can be shown.
 
 | Neural: reading the record | Symbolic: applying the law |
 |---|---|
